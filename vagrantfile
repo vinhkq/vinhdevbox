@@ -1,0 +1,43 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# required vagrant plugins
+# - vagrant-rsync-back
+# - vagrant-gatling-rsync
+
+Vagrant.configure(2) do |config|
+  config.vm.box = "vinh_dev_box"
+  #config.vm.box_url = "https://atlas.hashicorp.com/vinhkq/boxes/vinhdevbox/versions/1.0/providers/virtualbox.box"
+
+  config.ssh.insert_key = false
+
+  if Vagrant.has_plugin?("vagrant-vbguest") then
+    config.vbguest.auto_update = true
+  end
+
+  config.vm.network "private_network", ip: "192.168.69.69"
+  # config.vm.network "public_network"
+
+  config.vm.synced_folder ".", "/vagrant", mount_options: ["dmode=776,fmode=777"], type: "virtualbox"
+
+  config.vm.provider "virtualbox" do |vb|
+    # Display the VirtualBox GUI when booting the machine
+    vb.gui = false
+
+    # Customize the amount of memory on the VM:
+    vb.cpus = 1
+    vb.memory = "2048"
+    vb.customize ["modifyvm", :id, "--ioapic", "on"]
+    vb.customize ["modifyvm", :id, "--memory", 2048]
+  end
+
+  config.vm.provision "shell", path: "provision.sh"
+
+#   config.vm.provision "shell", inline: <<-EOC
+# yum install -y deltarpm
+# yum install -y epel-release
+# yum groupinstall "Development tools"
+# yum -y update
+#   EOC
+
+end
