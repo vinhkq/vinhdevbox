@@ -1,11 +1,11 @@
 <?php
-
+phpinfo();
     /**
      * Mysql Connect
      */
     $servernameMySQL = 'localhost';
     $usernameMySQL = 'root';
-    $passwordMySQL = '123';
+    $passwordMySQL = 'root';
 
     try {
         $connMySQL = new PDO("mysql:host=$servernameMySQL;dbname=mysql", $usernameMySQL, $passwordMySQL);
