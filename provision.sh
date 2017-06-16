@@ -1,10 +1,12 @@
 echo '==============================='
 echo '======Development Tools========'
 echo '==============================='
+yum -y update
 yum install -y deltarpm
 yum install -y epel-release
-yum groupinstall "Development tools"
-yum -y update
+# yum groupinstall "Development tools"
+# yum install -y gettext-devel
+yum install -y autoconf gcc curl-devel expat-devel openssl-devel zlib-devel perl-devel perl-CPAN
 
 echo '==============================='
 echo '==========Setup Nginx=========='
@@ -51,25 +53,43 @@ sudo sed -i "s|;listen.group = nobody|listen.group = vagrant|" $php_fpm
 sudo systemctl restart php-fpm
 sudo systemctl restart nginx
 
+# Using NVM instead
 # echo '==============================='
-# echo '===========Setup NVM==========='
+# echo '==========Setup NodeJS========='
 # echo '==============================='
-# sudo wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | NVM_DIR=/usr/local/nvm bash
-# echo "export NVM_DIR=\"\$HOME/.nvm\"" >> .bashrc
-# echo "[ -s \"\$NVM_DIR/nvm.sh\" ] && . \"\$NVM_DIR/nvm.sh\"" >> .bashrc
-# echo "[ -s \"\$NVM_DIR/bash_completion\" ] && \. \"\$NVM_DIR/bash_completion\"" >> .bashrc
-
-# source ~/.bashrc
-# command -v nvm
+# curl -sL https://rpm.nodesource.com/setup_7.x | sudo -E bash -
+# sudo yum install -y nodejs
 
 echo '==============================='
-echo '==========Setup NodeJS========='
+echo '===========Setup GIT==========='
 echo '==============================='
-curl -sL https://rpm.nodesource.com/setup_7.x | sudo -E bash -
-sudo yum install -y nodejs
+sudo wget https://github.com/git/git/archive/v2.13.1.tar.gz \ -O git-2.13.1.tar.gz
+sudo tar -zxf v2.13.1.tar.gz
+cd git-2.13.1/
+make clean
+make configure
+./configure --prefix=/usr/local/git
+make
+make install
+echo "export PATH=\$PATH:/usr/local/git/bin" >> /etc/bashrc
 
-source ~/.bashrc
-source ~/.bash_profile
+echo '==============================='
+echo '=========Setup Composer========'
+echo '==============================='
+curl -sS https://getcomposer.org/installer | php
+mv composer.phar /usr/local/bin/composer
+
+echo '==============================='
+echo '========Setup PostgreSQL======='
+echo '==============================='
+sudo yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
+sudo yum install postgresql96-server postgresql96
+sudo /usr/pgsql-9.6/bin/postgresql96-setup initdb
+sudo systemctl start postgresql-9.6
+sudo systemctl enable postgresql-9.6
+
+# Run bashrc config
+source /etc/bashrc
 
 echo '==============================='
 echo '=======Setup Server Block======'
