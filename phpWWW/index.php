@@ -26,7 +26,7 @@ phpinfo();
      */
     $servernamePostgres = 'localhost';
     $usernamePostgres = 'postgres';
-    $passwordPostgres = '123';
+    $passwordPostgres = 'root';
 
     try {
         $connPostgres = pg_connect("host=$servernamePostgres port=5432 dbname=postgres user=$usernamePostgres password=$passwordPostgres");

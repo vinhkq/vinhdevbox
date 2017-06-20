@@ -82,11 +82,22 @@ mv composer.phar /usr/local/bin/composer
 echo '==============================='
 echo '========Setup PostgreSQL======='
 echo '==============================='
-sudo yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
-sudo yum install postgresql96-server postgresql96
+sudo yum -y install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
+sudo yum -y install postgresql96-server postgresql96
 sudo /usr/pgsql-9.6/bin/postgresql96-setup initdb
 sudo systemctl start postgresql-9.6
 sudo systemctl enable postgresql-9.6
+sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '{root}';"
+#sudo chown -R postgres /home/vagrant
+
+
+echo '==============================='
+echo '=========Setup MongoDB========='
+echo '==============================='
+cp /vagrant/config/setup/mongodb.repo /etc/yum.repos.d/mongodb.repo
+sudo yum install -y mongodb-org
+sudo systemctl start mongod
+sudo systemctl enable mongod
 
 # Run bashrc config
 source /etc/bashrc
