@@ -30,6 +30,9 @@ sudo systemctl start mariadb
 sudo systemctl enable mariadb
 # Set Root password
 mysqladmin -u root password root
+mysql --user="root" --password="root" -e "GRANT ALL ON *.* TO 'root'@'0.0.0.0' IDENTIFIED BY 'root' WITH GRANT OPTION;"
+mysql --user="root" --password="root" -e "GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY 'root' WITH GRANT OPTION;"
+sudo systemctl restart mariadb
 
 echo '==============================='
 echo '=========Setup PHP-FPM========='
@@ -89,6 +92,13 @@ sudo systemctl start postgresql-9.6
 sudo systemctl enable postgresql-9.6
 sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '{root}';"
 #sudo chown -R postgres /home/vagrant
+pg_hba="/var/lib/pgsql/9.6/data/pg_hba.conf"
+pg_conf="/var/lib/pgsql/9.6/data/postgresql.conf"
+sudo sed -i "s|peer|trust|" $pg_hba
+sudo sed -i "s|ident|trust|" $pg_hba
+sudo echo 'host    all        all        192.168.12.1/24    trust' >> $pg_hba
+sudo echo 'listen_addresses = "*"' >> $pg_conf
+sudo systemctl restart postgresql-9.6
 
 
 echo '==============================='
@@ -98,9 +108,17 @@ cp /vagrant/config/setup/mongodb.repo /etc/yum.repos.d/mongodb.repo
 sudo yum install -y mongodb-org
 sudo systemctl start mongod
 sudo systemctl enable mongod
+mongo_conf="/etc/mongod.conf"
+sudo sed -i "s|bind_ip|# bind_ip|" $mongo_conf
 
 # Run bashrc config
 source /etc/bashrc
+
+echo '==============================='
+echo '========Disable Firewall======='
+echo '==============================='
+sudo systemctl stop firewalld
+sudo systemctl disable firewalld
 
 echo '==============================='
 echo '=======Setup Server Block======'
