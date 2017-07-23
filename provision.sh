@@ -1,6 +1,7 @@
 echo '==============================='
 echo '======Development Tools========'
 echo '==============================='
+cd /opt/
 yum -y update
 yum install -y deltarpm
 yum install -y epel-release
@@ -75,6 +76,9 @@ make configure
 make
 make install
 echo "export PATH=\$PATH:/usr/local/git/bin" >> /etc/bashrc
+# Run bashrc config
+source /etc/bashrc
+cd /opt/
 
 echo '==============================='
 echo '=========Setup Composer========'
@@ -96,8 +100,8 @@ pg_hba="/var/lib/pgsql/9.6/data/pg_hba.conf"
 pg_conf="/var/lib/pgsql/9.6/data/postgresql.conf"
 sudo sed -i "s|peer|trust|" $pg_hba
 sudo sed -i "s|ident|trust|" $pg_hba
-sudo echo 'host    all        all        192.168.12.1/24    trust' >> $pg_hba
-sudo echo 'listen_addresses = "*"' >> $pg_conf
+sudo echo 'host        all        all        192.168.12.1/24        trust' >> $pg_hba
+sudo sed -i "s|#listen_addresses = 'localhost'|listen_addresses = '*'|" $pg_conf
 sudo systemctl restart postgresql-9.6
 
 
@@ -109,10 +113,54 @@ sudo yum install -y mongodb-org
 sudo systemctl start mongod
 sudo systemctl enable mongod
 mongo_conf="/etc/mongod.conf"
-sudo sed -i "s|bind_ip|# bind_ip|" $mongo_conf
+sudo sed -i "s|bindIp|# bindIp|" $mongo_conf
 
+echo '==============================='
+echo '==========Setup Redis=========='
+echo '==============================='
+wget http://download.redis.io/releases/redis-3.2.9.tar.gz
+tar -xvzf redis-3.2.9.tar.gz
+cd redis-3.2.9
+cd deps
+make hiredis lua jemalloc linenoise
+make geohash-int
+cd ../
+make
+make install
+cd utils
+echo | ./install_server.sh
+systemctl start redis_6379
+systemctl enable redis_6379
+redis_conf="/etc/redis/6379.conf"
+sudo sed -i "s|bind 127.0.0.1|bind 0.0.0.0|" $redis_conf
+systemctl restart redis_6379
+cd /opt/
+
+echo '==============================='
+echo '=====Install Ruby by Rbenv====='
+echo '==============================='
+git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv
+echo '# rbenv setup' > /etc/profile.d/rbenv.sh
+echo 'export RBENV_ROOT=/usr/local/rbenv' >> /etc/profile.d/rbenv.sh
+echo 'export PATH="$RBENV_ROOT/bin:$PATH"' >> /etc/profile.d/rbenv.sh
+echo 'eval "$(rbenv init -)"' >> /etc/profile.d/rbenv.sh
+chmod +x /etc/profile.d/rbenv.sh
+source /etc/profile.d/rbenv.sh
+git clone https://github.com/sstephenson/ruby-build.git /usr/local/rbenv/plugins/ruby-build
 # Run bashrc config
 source /etc/bashrc
+cd /opt/
+
+echo '==============================='
+echo '========Install Python 3======='
+echo '==============================='
+cd ~/
+wget https://www.python.org/ftp/python/3.6.2/Python-3.6.2.tgz
+tar xzf Python-3.6.2.tgz
+cd Python-3.6.2
+./configure
+make altinstall
+cd /opt/
 
 echo '==============================='
 echo '========Disable Firewall======='
