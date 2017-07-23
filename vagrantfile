@@ -19,6 +19,7 @@ Vagrant.configure(2) do |config|
   config.vm.network :forwarded_port, host: 3308, guest: 3306
   config.vm.network :forwarded_port, host: 5545, guest: 5432
   config.vm.network :forwarded_port, host: 27017, guest: 27017
+  config.vm.network :forwarded_port, host: 6379, guest: 6379
   # config.vm.network "public_network"
 
   config.vm.synced_folder ".", "/vagrant", mount_options: ["dmode=776,fmode=777"], type: "virtualbox"
@@ -36,6 +37,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.provision "shell", path: "provision.sh"
   config.vm.provision "shell", path: "user_provision.sh", privileged: false
+  config.vm.provision "shell", path: "config.sh"
 
 #   config.vm.provision "shell", inline: <<-EOC
 # yum install -y deltarpm
