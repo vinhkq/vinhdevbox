@@ -161,6 +161,7 @@ cd Python-3.6.2
 ./configure
 make altinstall
 cd /opt/
+sudo python3.6 -m easy_install pip
 
 echo '==============================='
 echo '========Disable Firewall======='
