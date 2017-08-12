@@ -5,6 +5,7 @@ cd /opt/
 yum -y update
 yum install -y deltarpm
 yum install -y epel-release
+yum install -y wget
 # yum groupinstall "Development tools"
 # yum install -y gettext-devel
 yum install -y autoconf gcc curl-devel expat-devel openssl-devel zlib-devel perl-devel perl-CPAN
@@ -161,6 +162,7 @@ cd Python-3.6.2
 ./configure
 make altinstall
 cd /opt/
+sudo cp /usr/local/bin/python3.6 /usr/bin/
 sudo python3.6 -m easy_install pip
 
 echo '==============================='
