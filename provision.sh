@@ -6,6 +6,10 @@ yum -y update
 yum install -y deltarpm
 yum install -y epel-release
 yum install -y wget
+<<<<<<< HEAD
+=======
+yum install -y unzip
+>>>>>>> 52ab451e6ab96d14e61f3b6d336946177e3fa34b
 # yum groupinstall "Development tools"
 # yum install -y gettext-devel
 yum install -y autoconf gcc curl-devel expat-devel openssl-devel zlib-devel perl-devel perl-CPAN
@@ -68,9 +72,9 @@ sudo systemctl restart nginx
 echo '==============================='
 echo '===========Setup GIT==========='
 echo '==============================='
-sudo wget https://github.com/git/git/archive/v2.13.1.tar.gz \ -O git-2.13.1.tar.gz
-sudo tar -zxf v2.13.1.tar.gz
-cd git-2.13.1/
+sudo wget https://github.com/git/git/archive/v2.14.0.tar.gz \ -O git-2.14.0.tar.gz
+sudo tar -zxf v2.14.0.tar.gz
+cd git-2.14.0/
 make clean
 make configure
 ./configure --prefix=/usr/local/git
@@ -140,6 +144,10 @@ cd /opt/
 echo '==============================='
 echo '=====Install Ruby by Rbenv====='
 echo '==============================='
+# cd /usr/local
+# sudo wget https://github.com/rbenv/rbenv/archive/master.zip
+# unzip master.zip
+# mv rbenv-master rbenv
 git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv
 echo '# rbenv setup' > /etc/profile.d/rbenv.sh
 echo 'export RBENV_ROOT=/usr/local/rbenv' >> /etc/profile.d/rbenv.sh
@@ -163,7 +171,7 @@ cd Python-3.6.2
 make altinstall
 cd /opt/
 sudo cp /usr/local/bin/python3.6 /usr/bin/
-sudo python3.6 -m easy_install pip
+python3.6 -m easy_install pip
 
 echo '==============================='
 echo '========Disable Firewall======='
