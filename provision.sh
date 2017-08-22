@@ -6,10 +6,7 @@ yum -y update
 yum install -y deltarpm
 yum install -y epel-release
 yum install -y wget
-<<<<<<< HEAD
-=======
 yum install -y unzip
->>>>>>> 52ab451e6ab96d14e61f3b6d336946177e3fa34b
 # yum groupinstall "Development tools"
 # yum install -y gettext-devel
 yum install -y autoconf gcc curl-devel expat-devel openssl-devel zlib-devel perl-devel perl-CPAN
