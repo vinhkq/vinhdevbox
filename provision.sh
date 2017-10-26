@@ -93,6 +93,9 @@ sudo systemctl enable php71-php-fpm
 
 sudo systemctl restart nginx
 
+# Using PHP 7.1 as default PHP
+ln -s /usr/bin/php71 /usr/bin/php
+
 # Using NVM instead
 # echo '==============================='
 # echo '==========Setup NodeJS========='
@@ -119,7 +122,7 @@ cd /opt/
 echo '==============================='
 echo '=========Setup Composer========'
 echo '==============================='
-curl -sS https://getcomposer.org/installer | php
+curl -sS https://getcomposer.org/installer | php71
 mv composer.phar /usr/local/bin/composer
 
 echo '==============================='
