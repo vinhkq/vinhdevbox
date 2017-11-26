@@ -106,9 +106,9 @@ ln -s /usr/bin/php71 /usr/bin/php
 echo '==============================='
 echo '===========Setup GIT==========='
 echo '==============================='
-sudo wget https://github.com/git/git/archive/v2.14.0.tar.gz \ -O git-2.14.0.tar.gz
-sudo tar -zxf v2.14.0.tar.gz
-cd git-2.14.0/
+sudo wget https://github.com/git/git/archive/v2.15.0.tar.gz \ -O git-2.15.0.tar.gz
+sudo tar -zxf v2.15.0.tar.gz
+cd git-2.15.0/
 make clean
 make configure
 ./configure --prefix=/usr/local/git
@@ -128,11 +128,11 @@ mv composer.phar /usr/local/bin/composer
 echo '==============================='
 echo '========Setup PostgreSQL======='
 echo '==============================='
-sudo yum -y install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
-sudo yum -y install postgresql96-server postgresql96
-sudo /usr/pgsql-9.6/bin/postgresql96-setup initdb
-sudo systemctl start postgresql-9.6
-sudo systemctl enable postgresql-9.6
+sudo yum -y install https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-centos10-10-2.noarch.rpm
+sudo yum -y install postgresql10-server postgresql10
+sudo /usr/pgsql-10/bin/postgresql-10-setup initdb
+sudo systemctl start postgresql-10
+sudo systemctl enable postgresql-10
 sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '{root}';"
 #sudo chown -R postgres /home/vagrant
 pg_hba="/var/lib/pgsql/9.6/data/pg_hba.conf"
@@ -157,9 +157,9 @@ sudo sed -i "s|bindIp|# bindIp|" $mongo_conf
 echo '==============================='
 echo '==========Setup Redis=========='
 echo '==============================='
-wget http://download.redis.io/releases/redis-3.2.9.tar.gz
-tar -xvzf redis-3.2.9.tar.gz
-cd redis-3.2.9
+wget http://download.redis.io/releases/redis-4.0.2.tar.gz
+tar -xvzf redis-4.0.2.tar.gz
+cd redis-4.0.2
 cd deps
 make hiredis lua jemalloc linenoise
 make geohash-int
@@ -198,9 +198,9 @@ echo '==============================='
 echo '========Install Python 3======='
 echo '==============================='
 cd ~/
-wget https://www.python.org/ftp/python/3.6.2/Python-3.6.2.tgz
-tar xzf Python-3.6.2.tgz
-cd Python-3.6.2
+wget https://www.python.org/ftp/python/3.6.3/Python-3.6.3.tgz
+tar xzf Python-3.6.3.tgz
+cd Python-3.6.3
 ./configure
 make altinstall
 cd /opt/
