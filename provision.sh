@@ -208,12 +208,21 @@ sudo cp /usr/local/bin/python3.6 /usr/bin/
 python3.6 -m easy_install pip
 
 echo '==============================='
+echo '=========Install Golang========'
+echo '==============================='
+wget https://storage.googleapis.com/golang/go1.9.2.linux-amd64.tar.gz
+sudo tar -zxvf go1.9.2.linux-amd64.tar.gz -C /usr/local
+echo 'export GOROOT=/usr/local/go' | sudo tee -a /etc/profile
+echo 'export PATH=$PATH:/usr/local/go/bin:/home/vagrant/go/bin' | sudo tee -a /etc/profile
+source /etc/profile
+go version
+go env
+'Debugger'
+go get github.com/derekparker/delve/cmd/dlv
+source /etc/profile
+
+echo '==============================='
 echo '========Disable Firewall======='
 echo '==============================='
 sudo systemctl stop firewalld
 sudo systemctl disable firewalld
-
-echo '==============================='
-echo '=======Setup Server Block======'
-echo '==============================='
-
